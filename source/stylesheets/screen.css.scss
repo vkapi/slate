@@ -82,7 +82,8 @@ html, body {
   // This is the logo at the top of the ToC
   &>img {
     display: block;
-    max-width: 100%;
+    max-width: 80%;
+    margin-left:10px;
   }
 
   &>.search {
@@ -112,6 +113,7 @@ html, body {
 
   img+.tocify {
     margin-top: $logo-margin;
+    margin-left:10px;
   }
 
   .search-results {

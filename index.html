@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>API Reference</title>
 
-    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
-    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
     <style>
       .highlight table td { padding: 5px; }
 .highlight table pre { margin: 0; }
@@ -88,10 +86,12 @@
   color: #90a959;
 }
     </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;]">
+  <body class="index" data-languages="[&quot;python&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -101,8 +101,6 @@
     <div class="tocify-wrapper">
       <img src="images/logo.png" />
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
               <a href="#" data-language-name="python">python</a>
         </div>
         <div class="search">
@@ -112,8 +110,7 @@
       <div id="toc">
       </div>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+            <li><a href='http://www.vertical-knowledge.com'>Vertical Knowledge</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -121,87 +118,68 @@
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+<p>Welcome to the Vertical Knowledge data API.  This is an early developer release of the API and should not
+be used in production environments.  <a href="https://github.com/vkapi/idyia/issues">Issues</a> can be submitted for any questions or assistance.  For API
+access please contact our <a href="mailto:info@vertical-knowledge.com">team</a>.</p>
 
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<p>This is a RESTful JSON API and helps connect users with VK&rsquo;s data.  Data is separated by several tiers of structure:</p>
 
-<p>This example API documentation page was created with <a href="https://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&rsquo;s documentation.</p>
+<ul>
+<li>Project:  The system or source of data.</li>
+<li>Table:  A specific data model or &lsquo;database table&rsquo; of data in a project.  Data is delivered flat but may have implied relations to other tables in a project.<br></li>
+<li>Batch:  A snapshot of data in time based on when the crawlers ran.</li>
+</ul>
 
-<h1 id="authentication">Authentication</h1>
+<p>Typical use cases well have users logging in, searching through their projects, choosing a table, and identifying which
+batch they wish to review.  Once this information is collected, the search endpoint can be consumed to process the actual data.  </p>
 
-<blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<p>Schemas for data sets can be provided by GETing a specific project.  </p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<h1 id="basic-api-information">Basic API information</h1>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
-
-<blockquote>
-<p>Make sure to replace <code class="prettyprint">meowmeowmeow</code> with your API key.</p>
-</blockquote>
-
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
-
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code class="prettyprint">Authorization: meowmeowmeow</code></p>
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-<h1 id="kittens">Kittens</h1>
-
-<h2 id="get-all-kittens">Get All Kittens</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+<p>Most resources return a Meta object and an objects list.  The Meta object helps the user know results, next pages,
+and other information about their request.  The objects list contains the actual data itself.</p>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"meta"</span><span class="p">:</span><span class="w">
+    </span><span class="p">{</span><span class="nt">"limit"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+     </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="nt">"offset"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+     </span><span class="nt">"previous"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="nt">"total_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="nt">"objects"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">]</span><span class="w">
   </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
 </span></code></pre>
 
-<p>This endpoint retrieves all kittens.</p>
+<h3 id="meta-attributes">Meta Attributes</h3>
 
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/api/kittens</code></p>
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>limit</td>
+<td>The amount of objects to return.  Defaults to 10, max limit is 1,000</td>
+</tr>
+<tr>
+<td>next</td>
+<td>Provides a suggested next &#39;page&rsquo; link based on your limit</td>
+</tr>
+<tr>
+<td>previous</td>
+<td>Provides a suggested previous &#39;page&rsquo; link based on your limit</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>Amount of records to skip before returning results.  Used for pagination</td>
+</tr>
+<tr>
+<td>total_count</td>
+<td>Total amount of records available with your query</td>
+</tr>
+</tbody></table>
 
 <h3 id="query-parameters">Query Parameters</h3>
 
@@ -213,57 +191,624 @@ You must replace <code>meowmeowmeow</code> with your personal API key.
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>limit</td>
+<td>10</td>
+<td>The amount of objects to return.  Defaults to 10, max limit is 1,000</td>
 </tr>
 <tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>offset</td>
+<td>0</td>
+<td>Amount of records to skip before returning results.  Used for pagination</td>
 </tr>
 </tbody></table>
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+<h1 id="authentication">Authentication</h1>
+
+<blockquote>
+<p>Authorization requires a previously provided username and password:</p>
+</blockquote>
+<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">api_url</span> <span class="o">=</span> <span class="s">"http://idyia.vk.ai/search_api/v1"</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s">"username"</span><span class="p">:</span> <span class="s">"USERNAME"</span><span class="p">,</span> <span class="s">"password"</span><span class="p">:</span> <span class="s">"PASSWORD"</span><span class="p">})</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">"{0}/login/"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">api_url</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">content</span><span class="p">)[</span><span class="s">'session'</span><span class="p">]</span>
+</code></pre>
+
+<blockquote>
+<p>returns:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"session"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SESSION_KEY"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"session_set"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-06-24T14:21:11.136996"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p>Make sure to replace <code class="prettyprint">USERNAME</code> and <code class="prettyprint">PASSWORD</code> with your credentials.</p>
+</blockquote>
+
+<p>All resources other than login require a session key.  Session keys are received after successfully POSTing
+to the login resource.  A session will expire after 15 minutes of inactivity.  </p>
+
+<aside class="notice">
+Be sure to add session=SESSION to all other requests.  You will receive a 401 if your session is invalid or expires.
+Additional logins will cancel out previous sessions.  
 </aside>
 
-<h2 id="get-a-specific-kitten">Get a Specific Kitten</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h1 id="logout">Logout</h1>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<blockquote>
+<p>Logging out requires an active session key:</p>
+</blockquote>
+<pre class="highlight python"><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"session"</span><span class="p">:</span> <span class="n">session</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s">"{0}/logout/"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">api_url</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 </code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+<blockquote>
+<p>returns a 204 if successful.</p>
+</blockquote>
+
+<p>Logging out instantly terminates a session and will prevent any other requests
+until the user logs in again.</p>
+
+<h1 id="project">Project</h1>
+
+<h2 id="get-all-projects">Get ALL projects</h2>
+<pre class="highlight python"><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"session"</span><span class="p">:</span> <span class="n">session</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"{0}/project/"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">api_url</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 </code></pre>
 
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"meta"</span><span class="p">:</span><span class="w">
+    </span><span class="p">{</span><span class="nt">"limit"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+     </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="nt">"offset"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+     </span><span class="nt">"previous"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="nt">"total_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="nt">"objects"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="nt">"guid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"351b6460bcdf250e62e1c618a4dca27891efdd78c44725eac40784488b553e1e"</span><span class="p">,</span><span class="w">
+       </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+       </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bestsellers"</span><span class="p">,</span><span class="w">
+       </span><span class="nt">"pre_approve"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+       </span><span class="nt">"resource_uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/search_api/v1/project/1/"</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+   </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>This endpoint retrieves a specific kitten.</p>
-
-<aside class="warning">Inside HTML code blocks like this one, you can&rsquo;t use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+<p>This endpoint retrieves all projects your credentials have access too.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
+<p><code class="prettyprint">GET http://idyia.vk.ai/search_api/v1/project/?format=json&amp;session=SESSION_KEY</code></p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="project-attributes">Project Attributes</h3>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>guid</td>
+<td>Unique text identifier for the project</td>
+</tr>
+<tr>
+<td>id</td>
+<td>Unique identifier for the project</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Project name</td>
+</tr>
+<tr>
+<td>pre_approve</td>
+<td>Determines if batches are automatically validated or if the must be approved by VK first</td>
+</tr>
+<tr>
+<td>resource_uri</td>
+<td>Resource path to directly return the object</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-a-specific-project">Get a specific Project</h2>
+<pre class="highlight python"><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"session"</span><span class="p">:</span> <span class="n">session</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"{0}/project/1/"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">api_url</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"guid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"351b6460bcdf250e62e1c618a4dca27891efdd78c44725eac40784488b553e1e"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bestsellers"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"pre_approve"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"resource_uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/search_api/v1/project/1/"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"schema"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"tables"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="nt">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="nt">"data_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"str"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"name"</span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="nt">"data_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"str"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"brand"</span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="nt">"data_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"datetime"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"created_at"</span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="nt">"data_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"float"</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rating_count"</span><span class="p">},</span><span class="w">
+          </span><span class="err">...</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+         </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Item"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint retrieves a specific project.  When retrieving a specific project the schema is provided.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://idyia.vk.ai/search_api/v1/project/&lt;ID&gt;/?format=json&amp;session=SESSION_KEY</code></p>
+
+<h3 id="project-attributes">Project Attributes</h3>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>guid</td>
+<td>Unique text identifier for the project</td>
+</tr>
+<tr>
+<td>id</td>
+<td>Unique identifier for the project</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Project name</td>
+</tr>
+<tr>
+<td>pre_approve</td>
+<td>Determines if batches are automatically validated or if the must be approved by VK first</td>
+</tr>
+<tr>
+<td>resource_uri</td>
+<td>Resource path to directly return the object</td>
+</tr>
+<tr>
+<td>schema.tables</td>
+<td>List of tables associated with the project</td>
+</tr>
+<tr>
+<td>schema.tables.name</td>
+<td>Table name</td>
+</tr>
+<tr>
+<td>schema.tables.fields</td>
+<td>List of fields associated with a table</td>
+</tr>
+<tr>
+<td>schema.tables.fields.name</td>
+<td>Field name</td>
+</tr>
+<tr>
+<td>schema.tables.fields.data_type</td>
+<td>Primitive of the field.  Typically string, datetime, integer, or float</td>
+</tr>
+</tbody></table>
+
+<h1 id="table">Table</h1>
+
+<h2 id="get-all-tables">Get ALL Tables</h2>
+<pre class="highlight python"><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"session"</span><span class="p">:</span> <span class="n">session</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"{0}/table/"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">api_url</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"limit"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"offset"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"previous"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"total_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"objects"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Item"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"resource_uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/search_api/v1/table/1/"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint retrieves all tables your credentials have access too.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://idyia.vk.ai/search_api/v1/table/?format=json&amp;session=SESSION_KEY</code></p>
+
+<h3 id="table-attributes">Table Attributes</h3>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Unique identifier for the table</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Table name</td>
+</tr>
+<tr>
+<td>resource_uri</td>
+<td>Resource path to directly return the object</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-a-specific-table">Get a specific Table</h2>
+<pre class="highlight python"><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"session"</span><span class="p">:</span> <span class="n">session</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"{0}/table/1/"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">api_url</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Item"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"resource_uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/search_api/v1/table/1/"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint retrieves a specific table.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://idyia.vk.ai/search_api/v1/table/&lt;ID&gt;/?format=json&amp;session=SESSION_KEY</code></p>
+
+<h3 id="table-attributes">Table Attributes</h3>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Unique identifier for the table</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Table name</td>
+</tr>
+<tr>
+<td>resource_uri</td>
+<td>Resource path to directly return the object</td>
+</tr>
+</tbody></table>
+
+<h1 id="field">Field</h1>
+
+<h2 id="get-all-fields">Get ALL Fields</h2>
+<pre class="highlight python"><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"session"</span><span class="p">:</span> <span class="n">session</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"{0}/field/"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">api_url</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"limit"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"offset"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"previous"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"total_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"objects"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"data_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"str"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"name"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"resource_uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/search_api/v1/field/23/"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint retrieves all fields your credentials have access too.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://idyia.vk.ai/search_api/v1/field/?format=json&amp;session=SESSION_KEY</code></p>
+
+<h3 id="field-attributes">Field Attributes</h3>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Unique identifier for the field</td>
+</tr>
+<tr>
+<td>data_type</td>
+<td>Primitive of the field.  Typically string, datetime, integer, or float</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Field name</td>
+</tr>
+<tr>
+<td>resource_uri</td>
+<td>Resource path to directly return the object</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-a-specific-field">Get a specific Field</h2>
+<pre class="highlight python"><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"session"</span><span class="p">:</span> <span class="n">session</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"{0}/table/1/"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">api_url</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"data_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"str"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"name"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"resource_uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/search_api/v1/field/23/"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint retrieves a specific field.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://idyia.vk.ai/search_api/v1/field/&lt;ID&gt;/?format=json&amp;session=SESSION_KEY</code></p>
+
+<h3 id="field-attributes">Field Attributes</h3>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Unique identifier for the field</td>
+</tr>
+<tr>
+<td>data_type</td>
+<td>Primitive of the field.  Typically string, datetime, integer, or float</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Field name</td>
+</tr>
+<tr>
+<td>resource_uri</td>
+<td>Resource path to directly return the object</td>
+</tr>
+</tbody></table>
+
+<h1 id="batch">Batch</h1>
+
+<h2 id="get-all-batches">Get ALL Batches</h2>
+<pre class="highlight python"><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"session"</span><span class="p">:</span> <span class="n">session</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"{0}/batch/"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">api_url</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"limit"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"offset"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"previous"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"total_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"objects"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-06-22T18:23:18.017486"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"external_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-06-09T06:18:15"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"external_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">17757</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">97</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"resource_uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/search_api/v1/batch/97/"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"VERIFIED"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint retrieves all batches your credentials have access too.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://idyia.vk.ai/search_api/v1/batch/?format=json&amp;session=SESSION_KEY</code></p>
+
+<h3 id="batch-attributes">Batch Attributes</h3>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Unique identifier for the batch</td>
+</tr>
+<tr>
+<td>created</td>
+<td>When the batch was ingested into the API</td>
+</tr>
+<tr>
+<td>external_date</td>
+<td>Date of when the batch was collected</td>
+</tr>
+<tr>
+<td>external_id</td>
+<td>Batch ID in the collection system</td>
+</tr>
+<tr>
+<td>status</td>
+<td>If the batch is VERIFIED, STAGED (needs QA), NEW, INPROGRESS, or REJECTED</td>
+</tr>
+<tr>
+<td>resource_uri</td>
+<td>Resource path to directly return the object</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-a-specific-batch">Get a specific Batch</h2>
+<pre class="highlight python"><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"session"</span><span class="p">:</span> <span class="n">session</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"{0}/batch/1/"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">api_url</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-06-22T18:23:18.017486"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"external_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-06-09T06:18:15"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"external_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">17757</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">97</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"resource_uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/search_api/v1/batch/97/"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"VERIFIED"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint retrieves a specific batch.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://idyia.vk.ai/search_api/v1/batch/&lt;ID&gt;/?format=json&amp;session=SESSION_KEY</code></p>
+
+<h3 id="batch-attributes">Batch Attributes</h3>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Unique identifier for the batch</td>
+</tr>
+<tr>
+<td>created</td>
+<td>When the batch was ingested into the API</td>
+</tr>
+<tr>
+<td>external_date</td>
+<td>Date of when the batch was collected</td>
+</tr>
+<tr>
+<td>external_id</td>
+<td>Batch ID in the collection system</td>
+</tr>
+<tr>
+<td>status</td>
+<td>If the batch is VERIFIED, STAGED (needs QA), NEW, INPROGRESS, or REJECTED</td>
+</tr>
+<tr>
+<td>resource_uri</td>
+<td>Resource path to directly return the object</td>
+</tr>
+</tbody></table>
+
+<h1 id="search">Search</h1>
+
+<h2 id="retrieves-data-from-a-project-batch-and-a-table-requires-all-three-paramaters">Retrieves data from a project, batch, and a table.  Requires all three paramaters.</h2>
+<pre class="highlight python"><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"session"</span><span class="p">:</span> <span class="n">session</span><span class="p">,</span> <span class="s">"project"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"batch"</span><span class="p">:</span> <span class="mi">97</span><span class="p">,</span> <span class="s">"table"</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"{0}/batch/"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">api_url</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"batch_external_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-06-09T06:18:15"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"batch_external_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">17757</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"batch_status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Verified"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"limit"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/search_api/v1/search/?table=1&amp;session=SESSION&amp;project=1&amp;batch=97&amp;offset=10"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"offset"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"pages"</span><span class="p">:</span><span class="w"> </span><span class="mi">3532</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"previous"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"total_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">35318</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"objects"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"batch_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">97</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"brand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MX"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Baño"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-06-09T06:29:37"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"days_in_top_100"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"is_available"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"marketplace_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"marketplace_price_max"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"marketplace_price_min"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"marketplace_price_raw"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR 3,04"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Shower Shop UK - Anillas de metal par..."</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"price"</span><span class="p">:</span><span class="w"> </span><span class="mf">3.04</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"price_max"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"price_min"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"price_raw"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR 3,04"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"rank"</span><span class="p">:</span><span class="w"> </span><span class="mi">57</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"rating_count"</span><span class="p">:</span><span class="w"> </span><span class="mf">3.0</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"rating_value"</span><span class="p">:</span><span class="w"> </span><span class="mf">4.5</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"sale_price"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"sale_price_max"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"sale_price_min"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"sale_price_raw"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"site_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.amazon.es/item/dp/B005VDVH0I/"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nt">"ds_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"aa3fc703bee88332edbc1afebbffa588969700a1de0f0f2518850afb2db8113d"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"index_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-06-23T00:51:09"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+      </span><span class="err">...</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>This endpoint retrieves all data your credentials and parameters have access too.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://idyia.vk.ai/search_api/v1/search/?format=json&amp;session=SESSION_KEY&amp;project=&lt;PROJECT&gt;&amp;table=&lt;TABLE&gt;&amp;batch=&lt;BATCH&gt;</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
 
 <table><thead>
 <tr>
@@ -272,16 +817,82 @@ Remember — a happy kitten is an authenticated kitten!
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
+<td>project</td>
+<td>Unique identifier for the project you are searching</td>
+</tr>
+<tr>
+<td>batch</td>
+<td>Unique identifier for the batch you are searching</td>
+</tr>
+<tr>
+<td>table</td>
+<td>Unique identifier for the table you are searching</td>
+</tr>
+</tbody></table>
+
+<h3 id="meta-attributes">Meta Attributes</h3>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>batch_external_date</td>
+<td>Date of when the batch was collected</td>
+</tr>
+<tr>
+<td>batch_external_id</td>
+<td>Batch ID from the collection system</td>
+</tr>
+<tr>
+<td>batch_status</td>
+<td>Date of when the batch was collected</td>
+</tr>
+<tr>
+<td>external_id</td>
+<td>Batch ID in the collection system</td>
+</tr>
+<tr>
+<td>status</td>
+<td>If the batch is VERIFIED, STAGED (needs QA), NEW, INPROGRESS, or REJECTED</td>
+</tr>
+<tr>
+<td>pages</td>
+<td>Estimated total pages based on limit and total_count</td>
+</tr>
+</tbody></table>
+
+<h3 id="object-attributes">Object Attributes</h3>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>batch_id</td>
+<td>Internal id of the batch</td>
+</tr>
+<tr>
+<td>ds_id</td>
+<td>Internal unique identifier of the data record</td>
+</tr>
+<tr>
+<td>index_date</td>
+<td>Date record was ingested into the API</td>
+</tr>
+<tr>
+<td>data</td>
+<td>Actual data for the object.  Schema based on project and table</td>
 </tr>
 </tbody></table>
 
           <h1 id="errors">Errors</h1>
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&rsquo;s frontmatter. Files are included in the order listed.</aside>
-
-<p>The Kittn API uses the following error codes:</p>
+<p>The API uses the following error codes:</p>
 
 <table><thead>
 <tr>
@@ -291,55 +902,33 @@ Remember — a happy kitten is an authenticated kitten!
 </thead><tbody>
 <tr>
 <td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
+<td>Bad Request &ndash; Your request is malformed or you are missing a required parameter</td>
 </tr>
 <tr>
 <td>401</td>
-<td>Unauthorized &ndash; Your API key is wrong</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
+<td>Unauthorized &ndash; Your session has expired or you are not providing the correct session/authentication</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
+<td>Not Found &ndash; The resource you are attempting to access does not exist</td>
 </tr>
 <tr>
 <td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
+<td>Method Not Allowed &ndash; The API supports only GET for most resources.  Login supports POST and Logout supports DELETE.</td>
 </tr>
 <tr>
 <td>500</td>
-<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
+<td>Internal Server Error &ndash; An error has occurred with the API.  If you continue to have issues please open an <a href="https://github.com/vkapi/idyia/issues">Issue</a>.</td>
 </tr>
 <tr>
 <td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
+<td>Service Unavailable &ndash; Servers are under heavy load.  Please try again later.</td>
 </tr>
 </tbody></table>
 
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
                 <a href="#" data-language-name="python">python</a>
           </div>
       </div>
